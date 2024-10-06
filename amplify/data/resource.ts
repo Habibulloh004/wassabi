@@ -10,22 +10,21 @@ const schema = a.schema({
   Todo: a
     .model({
       content: a.string(),
-    })
-    .authorization((allow) => [allow.publicApiKey()]),
+    }),
 
   Order: a.model({
     orderId: a.id(),
     spot_id: a.integer(),
     phone: a.string(),
     products: a.hasMany('Product', 'orderId'),
-  }).authorization((allow) => [allow.publicApiKey()]),
+  }),
 
   Product: a.model({
     product_id: a.integer(),
     count: a.integer(),
     orderId: a.belongsTo('Order', 'orderId'),
-  }).authorization((allow) => [allow.publicApiKey()]),
-});
+  }),
+}).authorization((allow) => [allow.publicApiKey()]);
 
 export type Schema = ClientSchema<typeof schema>;
 
