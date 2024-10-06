@@ -18,7 +18,7 @@ const client = generateClient<Schema>();
 // Define the Todo type based on the schema
 interface Todo {
   id: string;
-  content?: string; // The content field can be optional
+  content: string | null; // The content field can be optional
   createdAt: string;
   updatedAt: string;
 }
@@ -41,10 +41,8 @@ export default function App() {
     }
 
     client.models.Todo.observeQuery().subscribe({
-      next: (data: TodoData) => {
-        setTodos([...(data.items as Todo[])]);
-        console.log("data", data);
-      },
+      next: (data: TodoData) =>
+        setTodos([...(data.items as unknown as Todo[])]),
     });
   }
 
