@@ -12,18 +12,18 @@ const schema = a.schema({
       content: a.string(),
     }),
 
-  Order: a.model({
-    orderId: a.id(),
-    spot_id: a.integer(),
-    phone: a.string(),
-    products: a.hasMany('Product', 'orderId'),
-  }),
+  // Order: a.model({
+  //   orderId: a.id(),
+  //   spot_id: a.integer(),
+  //   phone: a.string(),
+  //   products: a.hasMany('Product', 'orderId'),
+  // }),
 
-  Product: a.model({
-    product_id: a.integer(),
-    count: a.integer(),
-    orderId: a.belongsTo('Order', 'orderId'),
-  }),
+  // Product: a.model({
+  //   product_id: a.integer(),
+  //   count: a.integer(),
+  //   orderId: a.belongsTo('Order', 'orderId'),
+  // }),
 }).authorization((allow) => [allow.publicApiKey()]);
 
 export type Schema = ClientSchema<typeof schema>;
