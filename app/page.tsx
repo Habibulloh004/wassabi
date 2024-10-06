@@ -7,6 +7,7 @@ import "./../app/app.css";
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
+import toast from "react-hot-toast";
 
 // Configure Amplify with the outputs from the generated configuration
 Amplify.configure(outputs);
@@ -22,14 +23,28 @@ interface Todo {
   updatedAt: string;
 }
 
+interface TodoData {
+  items: Todo[];
+  isSynced: Boolean;
+}
+
 export default function App() {
   // Use the defined Todo type for the state
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [count, setCount] = useState(0);
 
   // Function to list all todos and update the state
-  function listTodos() {
+  async function listTodos() {
+    const { data, errors } = await client.models.Todo.list();
+    if (count == 1 && todos.length != data.length) {
+      toast.success("New message!");
+    }
+
     client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...(data.items as Todo[])]),
+      next: (data: TodoData) => {
+        setTodos([...(data.items as Todo[])]);
+        console.log("data", data);
+      },
     });
   }
 
@@ -66,6 +81,7 @@ export default function App() {
   // Initial data fetch when the component mounts
   useEffect(() => {
     listTodos();
+    setCount(1);
   }, []);
 
   return (

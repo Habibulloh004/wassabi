@@ -12,6 +12,18 @@ const schema = a.schema({
       content: a.string(),
     })
     .authorization((allow) => [allow.publicApiKey()]),
+
+  Order: a.model({
+    orderId: a.id(),
+    spot_id: a.integer(),
+    phone: a.string(),
+    products: a.hasMany('Product', 'orderId'),
+  }),
+  Product: a.model({
+    product_id: a.integer(),
+    count: a.integer(),
+    orderId: a.belongsTo('Order', 'orderId'),
+  })
 });
 
 export type Schema = ClientSchema<typeof schema>;
