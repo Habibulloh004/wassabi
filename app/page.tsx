@@ -14,7 +14,7 @@ const client = generateClient<Schema>();
 
 interface Todo {
   id: string;
-  content: string;
+  content?: string;
   createdAt: string;
   updatedAt: string;
 }
